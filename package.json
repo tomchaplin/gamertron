@@ -1,0 +1,22 @@
+{
+  "name": "gamertron",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+	"start": "node index.js",
+	"dev": "nodemon --ignore db.json index.js"
+  },
+  "author": "Thomas Chaplin",
+  "license": "MIT",
+  "dependencies": {
+    "ejs": "^3.1.3",
+    "express": "^4.17.1",
+    "lowdb": "^1.0.0",
+    "password-hash-and-salt": "^0.1.4"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  }
+}
