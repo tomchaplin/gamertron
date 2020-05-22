@@ -14,7 +14,7 @@ const db = low(adapter);
 
 // Globals
 const ADMIN_PASS = 'admin_pass';
-const NODE_PORT = 4000;
+const NODE_PORT = process.env.PORT || 4000;
 const SITE_TITLE = 'Gamertron';
 const templateDirectory = path.join(__dirname, 'templates');
 
