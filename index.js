@@ -29,12 +29,12 @@ function userExists(user) {
 }
 
 function preflightChecks(req, res, next) {
-	if(typeof(req.body.user) === 'undefined') {
+	if(typeof(req.body.user) === 'undefined' || req.body.user.length == 0) {
 		res.status(400);
 		res.json({err: 'No user provided'});
 		return
 	}
-	if(typeof(req.body.pass) === 'undefined') {
+	if(typeof(req.body.pass) === 'undefined' || req.body.pass.length == 0) {
 		res.status(400);
 		res.json({err: 'No password provided'});
 		return
@@ -65,12 +65,19 @@ app.get('/', (req, res) => {
 	});
 });
 
+app.get('/admin', (req, res) => {
+	ejs.renderFile(path.join(templateDirectory, 'admin.ejs'), {title: SITE_TITLE}, {}, (err, str) => {
+		res.send(str);
+	});
+});
+
 /*
  * New user route should except form data to register a new user
  * Only active when showResults = false
  * It should register the new user and then serve them with a sucess message
  */
 app.post('/new_user', preflightChecks, (req, res) => {
+	console.log(req.body);
 	if (db.get('showResults').value()){ 
 		res.status(400);
 		res.json({err: 'Not accepting new users'});
@@ -86,7 +93,7 @@ app.post('/new_user', preflightChecks, (req, res) => {
 			.push({user: req.body.user, hash: hash, murderer: false})
 			.write();
 		res.status(200);
-		res.json({success: true, user: req.body.user});
+		res.json({err: false, user: req.body.user});
 	});
 });
 
@@ -116,13 +123,13 @@ app.post('/get_results', preflightChecks, (req, res) => {
 			res.json({err: 'Wrong password'});
 		} else {
 			res.status(200);
-			res.json({success: true, user: req.body.user, murderer: user.murderer});
+			res.json({err: false, user: req.body.user, murderer: user.murderer});
 		}
 	});
 });
 
 app.post('/change_mode', (req, res) => {
-	if(typeof(req.body.showResults) === 'unddefined'
+	if(typeof(req.body.showResults) === 'undefined'
 		|| typeof(req.body.pass) === 'undefined'
 		|| req.body.pass !== ADMIN_PASS) {
 		res.status(400);
@@ -134,7 +141,8 @@ app.post('/change_mode', (req, res) => {
 		computeMurderer();
 	}
 	res.status(200);
-	res.json({success: true, showResults: req.body.showResults});
+	res.json({err: false, showResults: req.body.showResults});
 })
 
+app.use(express.static(path.join(__dirname, 'public'), {index: false, extensions:['html']}));
 app.listen(NODE_PORT, () => console.log(`Listening on ${NODE_PORT}`));

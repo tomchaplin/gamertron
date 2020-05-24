@@ -1,0 +1,16 @@
+<%- include('header') -%>
+<div class="p-4 rounded form-holder">
+	<h1 class="display-4 text-center mb-5">Switch Mode</h1>
+	<p class="form-feedback text-center" id="form-feedback"></p>
+	<form id="user-form">
+		<div class="form-group form-check">
+			<input type="checkbox" class="form-check-input" id="showResults">
+			<label class="form-check-label" for="showResults">Show results</label>
+		</div>
+		<label for="inputPassword" class="sr-only">Password</label>
+		<input type="password" id="inputPassword" class="form-control" placeholder="Password">
+		<button class="btn btn-lg btn-primary btn-block mt-3" type="Submit">Switch</submit>
+	</form>
+</div>
+<script src="/app/admin.js"></script>
+<%- include('footer') -%>

@@ -1,0 +1,79 @@
+form input[type="text"] {
+	border-bottom-left-radius: 0;
+	border-bottom-right-radius: 0;
+}
+
+form input[type="password"] {
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
+}
+
+$sidePadding : 25px;
+$topPadding  : 25px;
+$boxWidth    : min(500px, calc(100% - 2 *#{$sidePadding}));
+
+.form-holder {
+	position: absolute;
+	top:0;
+	left: 0;
+	width: $boxWidth;
+	margin-top: $topPadding;
+	margin-left: calc(50% - calc( #{$boxWidth} / 2));
+	background-color: #f2f2f2;
+	opacity: 0.9;
+	box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+html, body {
+	width: 100%;
+	height: 100%;
+}
+
+$bokehCount: 30;
+$bokehBaseSize: 11rem;
+$bokehBaseOpacity: 0.45;
+$bokehBaseBrightness: 200;
+$bokeBaseDuration: 16s;
+$colorSet: (
+	#ffa6007c,
+	#fe000060,
+	#ec6b025b
+);
+
+@keyframes bokeh {
+	100% {
+		transform: translate3d(0, 0, 1px) rotate(360deg); 
+	}
+}
+
+.bokeh {
+	width: 100%;
+	height: 100%;
+	position: relative;
+	background: #1d0302;
+	overflow: hidden;
+
+	div {
+		position: absolute;
+		border-radius: 50%;
+		animation-name: bokeh;
+		animation-iteration-count: infinite;
+		animation-timing-function: linear;
+		@for $i from 1 through $bokehCount {
+			&:nth-child(#{$i}) {
+				$randomizedSize: random() + $bokehBaseSize;
+				width: $randomizedSize;
+				height: $randomizedSize;
+				top: random(100) * 1% - 20%;
+				left: random(100) * 1% - 20%;
+				transform-origin: (random(50) - 25) * 1vw   (random(50) - 25) * 1vh;
+				color: nth($colorSet, random(length($colorSet)));
+				opacity: $bokehBaseOpacity + random(4) * 0.15;
+				box-shadow: ($randomizedSize + 5rem) 0 (0.2rem + random()*0.5rem) currentColor;
+				filter: brightness($bokehBaseBrightness + random(150)*1%);
+				animation-duration: $bokeBaseDuration + random(30)*1s;
+				transform: roate(360deg);
+			}
+		}
+	}
+}
