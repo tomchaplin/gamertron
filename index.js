@@ -59,7 +59,6 @@ app.get('/', (req, res) => {
 		? path.join(templateDirectory, 'reveal.ejs')
 		: path.join(templateDirectory, 'collect.ejs')
 	);
-	console.log(templateName);
 	ejs.renderFile(templateName, {title: SITE_TITLE}, {}, (err, str) => {
 		res.send(str);
 	});
@@ -77,7 +76,6 @@ app.get('/admin', (req, res) => {
  * It should register the new user and then serve them with a sucess message
  */
 app.post('/new_user', preflightChecks, (req, res) => {
-	console.log(req.body);
 	if (db.get('showResults').value()){ 
 		res.status(400);
 		res.json({err: 'Not accepting new users'});
@@ -94,6 +92,7 @@ app.post('/new_user', preflightChecks, (req, res) => {
 			.write();
 		res.status(200);
 		res.json({err: false, user: req.body.user});
+		console.log(`${req.body.user} has joined the game`);
 	});
 });
 
@@ -124,6 +123,7 @@ app.post('/get_results', preflightChecks, (req, res) => {
 		} else {
 			res.status(200);
 			res.json({err: false, user: req.body.user, murderer: user.murderer});
+			console.log(`${req.body.user} just retrieved their results`);
 		}
 	});
 });
@@ -142,6 +142,7 @@ app.post('/change_mode', (req, res) => {
 	}
 	res.status(200);
 	res.json({err: false, showResults: req.body.showResults});
+	console.log('Changed mode');
 })
 
 app.use(express.static(path.join(__dirname, 'public'), {index: false, extensions:['html']}));
